@@ -3,7 +3,7 @@
 // @namespace     http://rococolabs.org
 // @author        Diego Carvallo
 // @copyright     2013+, rococolabs.org
-// @version       1.0rc1
+// @version       1.1
 // @description   This script is meant to facilitate the downloads on a Moodle Class by adding a Download All button to every Session.
 // @icon          https://www.google.com/s2/favicons?domain=moodle.org
 // @run-at        document-end
