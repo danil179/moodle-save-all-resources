@@ -53,11 +53,11 @@ function injmain()
     };
     function step2()
     { 
-        require("https://raw.githubusercontent.com/danil179/moodle-save-all-resources/master/jszip.js", step3);
+        require("https://cdn.jsdelivr.net/gh/danil179/moodle-save-all-resources@master/jszip.js", step3);
     };
     function step3()
     { 
-        require("https://raw.githubusercontent.com/danil179/moodle-save-all-resources/master/jquery.multiDownload.js", step4);
+        require("https://cdn.jsdelivr.net/gh/danil179/moodle-save-all-resources@master/jquery.multiDownload.js", step4);
     };
     function step4()
     { 
