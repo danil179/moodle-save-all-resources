@@ -28,7 +28,7 @@ Only INCAE Moodle url was added to the <code>@match</code> definition, to be abl
 
 <h3>How to install</h3>
 <ol>
-    <li>For Firefox install <a href="https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/">Greasemonkey</a> or <a href="https://addons.mozilla.org/en-US/firefox/addon/scriptish/">Scriptish</a>. For Chrome install <a href="https://chrome.google.com/webstore/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo">Tampermonkey</a>. Then simply go to <a href="https://github.com/danil179/moodle-save-all-resources/raw/master/moodle-save-all-resources.user.js"></a> </li>
+    <li>For Firefox install <a href="https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/">Greasemonkey</a> or <a href="https://addons.mozilla.org/en-US/firefox/addon/scriptish/">Scriptish</a>. For Chrome install <a href="https://chrome.google.com/webstore/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo">Tampermonkey</a>. Then simply go to <a href="https://github.com/danil179/moodle-save-all-resources/raw/master/moodle-save-all-resources.user.js">https://github.com/danil179/moodle-save-all-resources/raw/master/moodle-save-all-resources.user.js</a> </li>
 </ol>
 
 
