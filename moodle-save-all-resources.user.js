@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name          Moodle Class Resoureces Downloader
+// @name          Moodle Class Resources Downloader
 // @namespace     http://rococolabs.org
 // @author        Diego Carvallo
 // @copyright     2013+, rococolabs.org
@@ -7,9 +7,17 @@
 // @description   This script is meant to facilitate the downloads on a Moodle Class by adding a Download All button to every Session.
 // @icon          https://www.google.com/s2/favicons?domain=moodle.org
 // @run-at        document-end
-// @match         http://lms.incae.edu/course/view.php*
+// @match         http://yourmoodleinstall.com/course/view.php*
 // @require       http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js
 // ==/UserScript==
+
+/**
+
+All edits from the fork made by me
+
+Edit the urls to a working versions of jszip
+
+**/
 
 // function to inject js to the DOM
 function inject(id, jscode) {
@@ -41,38 +49,41 @@ function injmain()
     };
     function step1()
     { 
-        require("http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js", step2);
+        require("https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js", step2);
     };
     function step2()
     { 
-        require("https://raw.github.com/sapeish/multiDownload/use-a-download/jquery.multiDownload.js", step3);
+        require("url to jszip", step3);
     };
     function step3()
     { 
-        require("https://raw.github.com/sapeish/jszip/load-from-url/jszip.js", step4);
+        require("url to multidownload", step4);
     };
     function step4()
     { 
         function cleanSpecialCharacters(string) {
-            string = string.replace(/á/g, "a");
-            string = string.replace(/é/g, "e");
-            string = string.replace(/í/g, "i");
-            string = string.replace(/ó/g, "o");
-            string = string.replace(/ú/g, "u");
-            string = string.replace(/ñ/g, "n");
-            string = string.replace(/ç/g, "c");
+            string = string.replace(/Ã¡/g, "a");
+            string = string.replace(/Ã©/g, "e");
+            string = string.replace(/Ã­/g, "i");
+            string = string.replace(/Ã³/g, "o");
+            string = string.replace(/Ãº/g, "u");
+            string = string.replace(/Ã±/g, "n");
+            string = string.replace(/Ã§/g, "c");
             return string;
         }
         function getExtensionFromURL(url) {
-            var name = "image";
-            name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
-            var result = regex.exec(url);
-            result = (result == null) ? "" : decodeURIComponent(result[1].replace(/\+/g, " "));
-            if(result)
-                result = result.substring(result.indexOf("/")+1);
+            //var name = "image.php";
+            //name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+            //var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+            //var result = regex.exec(url);
+            //result = (result == null) ? "" : decodeURIComponent(result[1].replace(/\+/g, " "));
+            result = url.substring(url.lastIndexOf("/")+1,url.lastIndexOf("-"));
+            //if(result)
+            //    result = result.substring(result.indexOf("/")+1);
             if(result == "powerpoint")
                 result = "ppt";
+            if(result == "document")
+                result = "docx";
             if(result == "word")
                 result = "doc";
             if(result == "excel")
@@ -89,7 +100,12 @@ function injmain()
             var aelement = document.createElement('a');
             aelement.download = name;
             aelement.href = url;
-            aelement.click();
+            var clickEvent = new MouseEvent("click", {
+					"view": window,
+					"bubbles": true,
+					"cancelable": false
+	        });
+            aelement.dispatchEvent(clickEvent);
         }
         
         function generateZip(button, group, fname)
@@ -137,6 +153,71 @@ function injmain()
                 folder.fileURL(name, url, id, callback, {xhrtype:"blob"});
             });        
         }
+      
+      	function generateZipMain(button)
+        {
+            var button = button;
+            var zip = new JSZip();
+            var foldername = $(".breadcrumb li:last-child a").text().replace(/\//g, "").replace(/\\/g, "");
+            var folder = zip.folder(foldername);
+            var progress = 0;
+            var count = 0;
+            var textupdate =  document.getElementById("zipalldone-all");
+          
+            $(".topics>li.section.main").each(function(index) {
+              var group = $(this).attr("id");
+              $("#loader-"+group).css("display", "initial");
+              count += $("#" + group + " .content .section.img-text .activity.resource a").length;
+              textupdate.innerHTML = "loading "+progress+"/"+count;
+              $("#" + group + " .content .section.img-text .activity a .downloadstatus").css("background-position", "16px 0px");
+              $("#" + group + " .content .section.img-text .activity.resource a .downloadstatus").css("background-position", "0px 0px");
+
+              var callback = function(id){
+                  progress += 1;
+                  textupdate.innerHTML = "loading "+progress+"/"+count;
+                  $("#" + id + " .downloadstatus").css("background-position", "-16px 0px");
+                  if (progress == count)
+                  {
+                      var content = zip.generate({type:"blob"});
+                      try 
+                      {
+                          //$("#loader-"+group).css("display", "none");
+                          textupdate.innerHTML = "";
+                          var name = foldername+".zip";
+                          var url = window.URL.createObjectURL(content);
+                          triggerDownoad(name, url);
+                          //$("#zipallstart-"+group).data("working", null);
+                          //$("#zipallstart-"+group).attr("style", "");
+                      }
+                      catch(e)
+                      {
+                          textupdate.innerHTML += " (not supported on this browser)";
+                      }
+                  }
+              };
+
+              $("#" + group + " .content .section.img-text .activity.resource a").each(function(index) {
+                  var name = $(this).data("name");
+                  var url = $(this).data("url");
+                  var id = $(this).attr("id");
+                  folder.fileURL(name, url, id, callback, {xhrtype:"blob"});
+              });
+            });
+        }
+        $(".topics").prepend("<div class='downloadallmain'></div>");
+        $(".downloadallmain").append("<a id='zipallstart-all' href=''>Download all zipped</a>&nbsp;&nbsp;"+
+                                               "<img id='loader-all' alt='loading'  style='vertical-align:-15px; display:none;' src='data:image/gif;base64,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'/>&nbsp;&nbsp;"+
+                                               "<a id='zipalldone-all' href=''></a>");
+          
+        $("#zipallstart-all").click( function() { 
+            if(!$(this).data("working")) {
+              $(this).data("working", "working");
+              $(this).css( {"color": "gray", "text-decoration": "none", "cursor": "default" });
+              generateZipMain(this);
+            }
+            return false; 
+          });
+
 
         // add the downloadall div
         $(".section.main .content").append("<div class='downloadall'></div>");
@@ -188,7 +269,7 @@ function injmain()
                     var name = $(".instancename", this).text();
                     var iconurl = $("img", this).attr("src");
                     var ext = getExtensionFromURL(iconurl);
-                    name = folder + " - " + name + "." + ext;
+                    name =  name + "." + ext;
                     $(this).attr("id", id);
                     $(this).attr("data-url", url);
                     $(this).attr("data-name", name);
@@ -217,6 +298,3 @@ function injmain()
 }
 
 inject("injmain", injmain);
-
-
-
