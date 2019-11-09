@@ -4,8 +4,6 @@ moodle-save-all-resources
 <h3>Purpose</h3>
 This Greasemonkey user script is meant to facilitate the downloads on a Moodle Class by adding a Download All button to every Session.
 
-Also available on userscripts.org http://userscripts.org/scripts/show/175843
-
 <h3>Features</h3>
 <ul>
     <li>Single file download just by clicking on its link (default behavior is opening a new window)</li>
@@ -30,8 +28,7 @@ Only INCAE Moodle url was added to the <code>@match</code> definition, to be abl
 
 <h3>How to install</h3>
 <ol>
-    <li>For Firefox install <a href="https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/">Greasemonkey</a> or <a href="https://addons.mozilla.org/en-US/firefox/addon/scriptish/">Scriptish</a>. For Chrome install <a href="https://chrome.google.com/webstore/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo">Tampermonkey</a>.</li>
-    <li>Install the userscript itself from <a href="http://userscripts.org/scripts/show/175843">userscripts.org</a>, click on <code>Install</code>.</li>
+    <li>For Firefox install <a href="https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/">Greasemonkey</a> or <a href="https://addons.mozilla.org/en-US/firefox/addon/scriptish/">Scriptish</a>. For Chrome install <a href="https://chrome.google.com/webstore/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo">Tampermonkey</a>. Then simply go to <a href="https://github.com/danil179/moodle-save-all-resources/raw/master/moodle-save-all-resources.user.js"></a> </li>
 </ol>
 
 
